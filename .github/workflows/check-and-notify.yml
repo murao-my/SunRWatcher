@@ -27,14 +27,14 @@ jobs:
       - name: Restore
         run: dotnet restore ./Watcher/Watcher.csproj
 
+      - name: Build
+        run: dotnet build --configuration Release ./Watcher/Watcher.csproj
+
       - name: Install Playwright browsers
         run: |
           dotnet tool install --global Microsoft.Playwright.CLI
           cd ./Watcher
-          ~/.dotnet/tools/playwright install --with-deps
-
-      - name: Build
-        run: dotnet build --configuration Release ./Watcher/Watcher.csproj
+          ~/.dotnet/tools/playwright install chromium
 
       - name: Run
         run: dotnet run --project ./Watcher/Watcher.csproj --configuration Release
