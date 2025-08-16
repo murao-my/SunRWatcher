@@ -25,7 +25,7 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore
-        run: dotnet restore ./src/Watcher/Watcher.csproj
+        run: dotnet restore ./Watcher/Watcher.csproj
 
       - name: Install Playwright browsers
         run: |
@@ -33,7 +33,7 @@ jobs:
           ~/.dotnet/tools/playwright install --with-deps
 
       - name: Build
-        run: dotnet build --configuration Release ./src/Watcher/Watcher.csproj
+        run: dotnet build --configuration Release ./Watcher/Watcher.csproj
 
       - name: Run
-        run: dotnet run --project ./src/Watcher/Watcher.csproj --configuration Release
+        run: dotnet run --project ./Watcher/Watcher.csproj --configuration Release
