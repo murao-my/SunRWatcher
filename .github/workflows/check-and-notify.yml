@@ -11,7 +11,7 @@ jobs:
     permissions:
       contents: read
     env:
-      TARGET_URL: "https://app.sunriselayer.io/liquidity-pool/4"
+      TARGET_URL: ${{ secrets.TARGET_URL }}
       THRESHOLD_LOW:  ${{ secrets.THRESHOLD_LOW }}        # 閾値A（以下で通知）
       THRESHOLD_HIGH: ${{ secrets.THRESHOLD_HIGH }}       # 閾値B（以上で通知）
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -30,6 +30,7 @@ jobs:
       - name: Install Playwright browsers
         run: |
           dotnet tool install --global Microsoft.Playwright.CLI
+          cd ./Watcher
           ~/.dotnet/tools/playwright install --with-deps
 
       - name: Build
