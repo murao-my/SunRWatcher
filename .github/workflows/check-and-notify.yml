@@ -1,0 +1,39 @@
+name: Sunrise CurrentPrice watcher (.NET + Playwright)
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"    # 5分ごと（UTC基準）
+  workflow_dispatch:
+
+jobs:
+  check-and-notify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      TARGET_URL: "https://app.sunriselayer.io/liquidity-pool/4"
+      THRESHOLD_LOW:  ${{ secrets.THRESHOLD_LOW }}        # 閾値A（以下で通知）
+      THRESHOLD_HIGH: ${{ secrets.THRESHOLD_HIGH }}       # 閾値B（以上で通知）
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore ./src/Watcher/Watcher.csproj
+
+      - name: Install Playwright browsers
+        run: |
+          dotnet tool install --global Microsoft.Playwright.CLI
+          ~/.dotnet/tools/playwright install --with-deps
+
+      - name: Build
+        run: dotnet build --configuration Release ./src/Watcher/Watcher.csproj
+
+      - name: Run
+        run: dotnet run --project ./src/Watcher/Watcher.csproj --configuration Release
