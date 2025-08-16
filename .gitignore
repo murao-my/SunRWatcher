@@ -1,0 +1,17 @@
+# Build outputs
+bin/
+obj/
+*/bin/
+*/obj/
+
+# Playwright browsers and dependencies  
+.playwright/
+*/.playwright/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Environment files
+.env
