@@ -183,8 +183,12 @@ catch (Exception e)
 }
 
 Console.WriteLine($"[INFO] Current Price = {price}, low = {low}, high = {high}");
-
-if (price <= low || price >= high || price != 0)
+if (price == 0)
+{
+    Console.WriteLine("[INFO] price is 0 -> no notification");
+    return;
+}
+if (price <= low || price >= high)
 {
     Console.WriteLine("[INFO] out-of-range -> notifying Discord");
     await NotifyDiscordAsync(webhook, url, price, low, high);
