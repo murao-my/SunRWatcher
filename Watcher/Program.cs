@@ -54,7 +54,7 @@ static async Task<double> ReadCurrentPriceAsync(string url)
     // ---- 取り方1: “Current Price” セクションをテキストで拾う ----
     // 画面レンダリングを少し待つ
     Console.WriteLine("[DEBUG] Waiting for page to render...");
-    await page.WaitForTimeoutAsync(5000);
+    await page.WaitForTimeoutAsync(8000);
 
     // 「Current Price」文字列の近辺を優先的に取得
     string? priceText = null;
@@ -143,9 +143,7 @@ static async Task NotifyDiscordAsync(string webhookUrl, string url, double value
 
 // メインプログラムの実行
 var url = Environment.GetEnvironmentVariable("TARGET_URL");
-
 var lowStr = Environment.GetEnvironmentVariable("THRESHOLD_LOW");
-
 var highStr = Environment.GetEnvironmentVariable("THRESHOLD_HIGH");
 var webhook = Environment.GetEnvironmentVariable("DISCORD_WEBHOOK_URL");
 
@@ -186,7 +184,7 @@ catch (Exception e)
 
 Console.WriteLine($"[INFO] Current Price = {price}, low = {low}, high = {high}");
 
-if (price <= low || price >= high)
+if (price <= low || price >= high || price != 0)
 {
     Console.WriteLine("[INFO] out-of-range -> notifying Discord");
     await NotifyDiscordAsync(webhook, url, price, low, high);
